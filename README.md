@@ -1,2 +1,2 @@
 # socket_attempt
-A brief rpgram to try socket programming
+A brief program to try socket programming
