@@ -38,7 +38,7 @@ def client_handler(connection):
     data = recv_end(connection)
     json_obj = json.loads(data)
     date = time.strftime('%X %x %Z')
-    print(f'\n{date}\n{json_obj}\n\n')
+    print(f'\n{date=}\n{json_obj=}\n\n')
     connection.close()
 
 

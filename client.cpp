@@ -39,12 +39,13 @@ int main(int argc, char **argv)
 		printf("connected to the server..\n");
 
 	std::string buff;
-	buff += "{";
 	std::string num_str;
+	int len = 300000;
 
-	int len = 30;
+	buff += "{";
 
-	for (int i=0; i<len; i++){
+	for (int i=0; i<len; i++)
+	{
 		num_str = std::to_string(i);
 		buff += "\"msg-type" + num_str + "\": \"stringa\", \"number" + num_str + "\": " + num_str;
 		if (i != len-1)
@@ -52,7 +53,9 @@ int main(int argc, char **argv)
 	}
 	buff += "}<<END>>";
 	
-	printf("%s\n", buff.c_str());	
+	buff = "{ \"first\": \"James\", \"last\": \"Bond\", \"nums\": [0, 0, 7] }";
+
+	printf("%s\n", buff.c_str());
 	write(sockfd, buff.c_str(), buff.size());
 	close(sockfd);
 }
