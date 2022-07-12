@@ -10,7 +10,7 @@ def read_arguments():
     parser = ArgumentParser(description=description_string)
     parser.add_argument("-i", "--ip", type=str,
                         default='127.0.0.1', help="ip host")
-    parser.add_argument("-p", "--port", type=int, default=8080, help="port")
+    parser.add_argument("-p", "--port", type=int, default=9998, help="port")
     return parser.parse_args()
 
 

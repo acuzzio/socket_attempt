@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#gcc -o client client.c
 g++ -o client client.cpp
+#g++ -o client client_file.cpp
 
 ./client

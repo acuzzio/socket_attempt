@@ -9,6 +9,7 @@
 #define PORT 9998
 #define HOST "127.0.0.1"
 #define SA struct sockaddr
+#define MARKER "<<END>>"
 
 int main(int argc, char **argv)
 {
@@ -51,11 +52,12 @@ int main(int argc, char **argv)
 		if (i != len-1)
 			buff += ",";
 	}
-	buff += "}<<END>>";
-	
-	buff = "{ \"first\": \"James\", \"last\": \"Bond\", \"nums\": [0, 0, 7] }";
+	buff += "}";
 
-	printf("%s\n", buff.c_str());
+	buff = "{ \"first\": \"James\", \"last\": \"Bond\", \"nums\": [0, 0, 7, 10] }";
+	buff += MARKER;
+
+	// printf("%s\n", buff.c_str());
 	write(sockfd, buff.c_str(), buff.size());
 	close(sockfd);
 }
