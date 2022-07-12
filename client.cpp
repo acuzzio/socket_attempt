@@ -2,13 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #define PORT 8080
 #define SA struct sockaddr
 
-int main()
+int main(int argc, char **argv)
 {
 	int sockfd, connfd;
 	struct sockaddr_in servaddr, cli;
@@ -36,15 +37,10 @@ int main()
 	else
 		printf("connected to the server..\n");
 
-	// // function for chat
-	// func(sockfd);
+	std::string buff;
+	buff += "{\"msg-type\": \"3\", \"number\": 3}";
 
-	char buff[8000] = "{\"msg-type\": \"3\", \"nouh\": 3}";
-
-	write(sockfd, buff, sizeof(buff));
-	bzero(buff, sizeof(buff));
-	read(sockfd, buff, sizeof(buff));
-	printf("From Server : %s\n", buff);
+	write(sockfd, buff.c_str(), buff.size());
 
 	// close the socket
 	close(sockfd);
