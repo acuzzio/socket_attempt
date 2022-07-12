@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#define PORT 8080
+#define PORT 9998
 #define HOST "127.0.0.1"
 #define SA struct sockaddr
 

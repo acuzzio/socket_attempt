@@ -31,7 +31,6 @@ def recv_end(the_socket):
                 total_data[-2] = last_pair[:last_pair.find(End)]
                 total_data.pop()
                 break
-    print(f'{total_data=}\n{type(total_data[0])=}')
     return ''.join(x.decode('utf-8') for x in total_data)
 
 
