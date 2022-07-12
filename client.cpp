@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #define PORT 8080
+#define HOST "127.0.0.1"
 #define SA struct sockaddr
 
 int main(int argc, char **argv)
@@ -26,7 +27,7 @@ int main(int argc, char **argv)
 
 	// assign IP, PORT
 	servaddr.sin_family = AF_INET;
-	servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	servaddr.sin_addr.s_addr = inet_addr(HOST);
 	servaddr.sin_port = htons(PORT);
 
 	// connect the client socket to server socket
@@ -40,7 +41,7 @@ int main(int argc, char **argv)
 	std::string buff;
 	buff += "{";
 	std::string num_str;
-	
+
 	int len = 30;
 
 	for (int i=0; i<len; i++){

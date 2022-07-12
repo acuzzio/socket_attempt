@@ -55,7 +55,7 @@ def start_server(host, port):
         ServerSocket.bind((host, port))
     except socket.error as e:
         print(str(e))
-    print(f'Server is listing on the port {port}...')
+    print(f'Server is listening on the port {port}...')
     ServerSocket.listen()
 
     while True:
