@@ -2,17 +2,42 @@ import socket
 import _thread as thr
 import time
 import json
+from argparse import ArgumentParser
 
-host = '127.0.0.1'
-port = 8080
-ThreadCount = 0
+
+def read_arguments():
+    description_string = "This is the tcp server."
+    parser = ArgumentParser(description=description_string)
+    parser.add_argument("-i", "--ip", type=str,
+                        default='127.0.0.1', help="ip host")
+    parser.add_argument("-p", "--port", type=int, default=8080, help="port")
+    return parser.parse_args()
+
+
+def recv_end(the_socket):
+    End = b'<<END>>'
+    total_data = []
+    data = ''
+    while True:
+        data = the_socket.recv(8192)
+        if End in data:
+            total_data.append(data[:data.find(End)])
+            break
+        total_data.append(data)
+        if len(total_data) > 1:
+            # check if end_of_data was split
+            last_pair = total_data[-2]+total_data[-1]
+            if End in last_pair:
+                total_data[-2] = last_pair[:last_pair.find(End)]
+                total_data.pop()
+                break
+    print(f'{total_data=}\n{type(total_data[0])=}')
+    return ''.join(x.decode('utf-8') for x in total_data)
 
 
 def client_handler(connection):
-    data = connection.recv(2048)
-    message = data.decode('utf-8')
-    cleanstring = message.split('\x00', 1)[0]
-    json_obj = json.loads(cleanstring)
+    data = recv_end(connection)
+    json_obj = json.loads(data)
     date = time.strftime('%X %x %Z')
     print(f'\n{date}\n{json_obj}\n\n')
     connection.close()
@@ -38,7 +63,8 @@ def start_server(host, port):
 
 
 def main():
-    start_server(host, port)
+    args = read_arguments()
+    start_server(args.ip, args.port)
 
 
 if __name__ == "__main__":
