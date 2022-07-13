@@ -4,11 +4,14 @@
 
 int main() {
     using namespace std;
-    string hello("Hello World!");
-    cout << hello << endl;
+
     Graph graph;
-    Node node;
-    graph.print_size();
-    graph.nodes_.emplace_back(node);
-    graph.print_size();
+    Element e_c = C;
+    Element e_h = H;
+    BondOrder bo_s = Single;
+
+    graph.add_node(e_h);
+    graph.add_node(e_c);
+    graph.add_edge(0, 1, bo_s);
+    graph.print_graph();
 }
