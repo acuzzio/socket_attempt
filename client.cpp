@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 
 	std::string buff;
 	std::string num_str;
-	int len = 300000;
+	int len = 3000000;
 
 	buff += "{";
 
@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 	}
 	buff += "}";
 
-	buff = "{ \"first\": \"James\", \"last\": \"Bond\", \"nums\": [0, 0, 7, 10] }";
+	// buff = "{ \"first\": \"James\", \"last\": \"Bond\", \"nums\": [0, 0, 7, 10] }";
 	buff += MARKER;
 
 	// printf("%s\n", buff.c_str());

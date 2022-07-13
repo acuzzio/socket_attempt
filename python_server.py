@@ -36,9 +36,12 @@ def recv_end(the_socket):
 
 def client_handler(connection):
     data = recv_end(connection)
-    json_obj = json.loads(data)
-    date = time.strftime('%X %x %Z')
-    print(f'\n{date=}\n{json_obj=}\n\n')
+    # json_obj = json.loads(data)
+    date = time.strftime('lol')
+    fn = f'{date}.json'
+    with open(fn, 'w') as f:
+        f.write(data)
+    # print(f'\n{date=}\n{json_obj=}\n\n')
     connection.close()
 
 
