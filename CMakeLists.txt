@@ -4,5 +4,10 @@ project(Graph VERSION 0.0)
 
 add_executable(Graph
     src/main.cpp
-    src/graph.cpp
+    src/Graph.cpp
+    src/Node.cpp
+    src/Edge.cpp
+    src/NodeAttribute.cpp
 )
+
+set_property(TARGET Graph PROPERTY CXX_STANDARD 14)
