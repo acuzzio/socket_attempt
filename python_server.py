@@ -41,6 +41,7 @@ def client_handler(connection):
     fn = f'{date}.json'
     with open(fn, 'w') as f:
         f.write(data)
+    print('\nFile {fn} written.\n')
     # print(f'\n{date=}\n{json_obj=}\n\n')
     connection.close()
 
