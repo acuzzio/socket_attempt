@@ -1,1 +1,1 @@
-{"first": "James", "last": "Bond", "nums": [0, 0, 7]}<<END>>
+{"first": "James", "last": "Bond", "nums": [0, 0, 7]}
