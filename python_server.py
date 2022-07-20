@@ -17,7 +17,12 @@ def read_arguments():
     return parser.parse_args()
 
 
+def cleanstring(bytestring):
+    return bytestring.split(b'\x00', 1)[0]
+
+
 def recv_end(the_socket):
+    name = cleanstring(the_socket.recv(128))
     End = b"<<END>>"
     total_data = []
     data = ""
@@ -35,23 +40,27 @@ def recv_end(the_socket):
                 total_data.pop()
                 break
     # return "".join(x.decode("utf-8") for x in total_data)
-    return b"".join(total_data)
+    return name.decode("utf-8"), b"".join(total_data)
 
 
-def get_filename(root_path: Path, date: time.struct_time) -> Path:
+def get_filename(root_path: Path,
+                 date: time.struct_time,
+                 name: str = "") -> Path:
     folder = (
         root_path / f"{date.tm_year}" / f"{date.tm_mon}" / f"{date.tm_mday}"
     )
-    file = f"{date.tm_hour}_{date.tm_min}_{date.tm_sec}.json"
+    if not name:
+        name = f"{date.tm_hour}_{date.tm_min}_{date.tm_sec}.json"
     folder.mkdir(parents=True, exist_ok=True)
-    fn = folder / file
+    fn = folder / name
     return fn
 
 
 def client_handler(connection):
-    data = recv_end(connection)
+    name, data = recv_end(connection)
+    print(f'{data=}\n{name=}')
     date = time.localtime()
-    fn = get_filename(Path("."), date)
+    fn = get_filename(Path("."), date, name)
     with open(fn, "bw") as f:
         f.write(data)
     print(f"\nFile {fn} written.\n")

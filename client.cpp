@@ -41,12 +41,25 @@ int main(int argc, char **argv)
 	else
 		printf("connected to the server..\n");
 
-	std::string buff, buff2;
+	std::string buff, filename;
 	std::string num_str;
-	int len = 30;
 
-	std::ifstream t("ca0");
-	// std::ifstream t("README.md");
+	filename = "README.md";
+
+	// buff += "{";
+
+	// for (int i=0; i<len; i++)
+	// {
+	// 	num_str = std::to_string(i);
+	// 	buff += "\"msg-type" + num_str + "\": \"stringa\", \"number" + num_str + "\": " + num_str;
+	// 	if (i != len-1)
+	// 		buff += ",";
+	// }
+	// buff += "}";
+	write(sockfd, filename.c_str(), 128);
+
+	// std::ifstream t("ca0");
+	std::ifstream t(filename);
 	std::stringstream buffer;
 	buffer << t.rdbuf();
 
