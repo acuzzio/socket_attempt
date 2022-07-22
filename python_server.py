@@ -3,7 +3,6 @@ import socket
 import _thread as thr
 import time
 
-import json
 from argparse import ArgumentParser
 
 
@@ -18,34 +17,12 @@ def read_arguments():
 
 
 def cleanstring(bytestring):
-    return bytestring.split(b'\x00', 1)[0]
+    return bytestring.split(b"\x00", 1)[0]
 
 
-def recv_end(the_socket):
-    name = cleanstring(the_socket.recv(128))
-    End = b"<<END>>"
-    total_data = []
-    data = ""
-    while True:
-        data = the_socket.recv(8192)
-        if End in data:
-            total_data.append(data[: data.find(End)])
-            break
-        total_data.append(data)
-        if len(total_data) > 1:
-            # check if end_of_data was split
-            last_pair = total_data[-2] + total_data[-1]
-            if End in last_pair:
-                total_data[-2] = last_pair[: last_pair.find(End)]
-                total_data.pop()
-                break
-    # return "".join(x.decode("utf-8") for x in total_data)
-    return name.decode("utf-8"), b"".join(total_data)
-
-
-def get_filename(root_path: Path,
-                 date: time.struct_time,
-                 name: str = "") -> Path:
+def get_filename(
+    root_path: Path, date: time.struct_time, name: str = ""
+) -> Path:
     folder = (
         root_path / f"{date.tm_year}" / f"{date.tm_mon}" / f"{date.tm_mday}"
     )
@@ -56,15 +33,30 @@ def get_filename(root_path: Path,
     return fn
 
 
+def recv_end(the_socket):
+    size_of_name_msg = the_socket.recv(128)
+    size_of_name = int(cleanstring(size_of_name_msg))
+    name = the_socket.recv(size_of_name)
+    size_of_data_msg = the_socket.recv(128)
+    size_of_data = int(cleanstring(size_of_data_msg))
+    data = the_socket.recv(size_of_data)
+    print(f"""
+{size_of_name_msg=}
+{size_of_name=}
+{name=}
+{size_of_data_msg=}
+{size_of_data=}
+""")
+    return size_of_name, name.decode("utf-8"), size_of_data, data
+
+
 def client_handler(connection):
-    name, data = recv_end(connection)
-    print(f'{data=}\n{name=}')
+    _, name, _, data = recv_end(connection)
     date = time.localtime()
     fn = get_filename(Path("."), date, name)
     with open(fn, "bw") as f:
         f.write(data)
     print(f"\nFile {fn} written.\n")
-    # print(f'\n{date=}\n{data=}\n\n')
     connection.close()
 
 

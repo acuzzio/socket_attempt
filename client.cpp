@@ -11,7 +11,6 @@
 #define PORT 9998
 #define HOST "127.0.0.1"
 #define SA struct sockaddr
-#define MARKER "<<END>>"
 
 int main(int argc, char **argv)
 {
@@ -44,19 +43,12 @@ int main(int argc, char **argv)
 	std::string buff, filename;
 	std::string num_str;
 
-	filename = "README.md";
+	// filename = "README.md";
+	filename = "python_server.py";
 
-	// buff += "{";
 
-	// for (int i=0; i<len; i++)
-	// {
-	// 	num_str = std::to_string(i);
-	// 	buff += "\"msg-type" + num_str + "\": \"stringa\", \"number" + num_str + "\": " + num_str;
-	// 	if (i != len-1)
-	// 		buff += ",";
-	// }
-	// buff += "}";
-	write(sockfd, filename.c_str(), 128);
+	write(sockfd, std::to_string(filename.size()).c_str(), 128);
+	write(sockfd, filename.c_str(), filename.size());
 
 	// std::ifstream t("ca0");
 	std::ifstream t(filename);
@@ -65,18 +57,7 @@ int main(int argc, char **argv)
 
 	buff += buffer.str();
 
-	// buff += "{";
-
-	// for (int i=0; i<len; i++)
-	// {
-	// 	num_str = std::to_string(i);
-	// 	buff += "\"msg-type" + num_str + "\": \"stringa\", \"number" + num_str + "\": " + num_str;
-	// 	if (i != len-1)
-	// 		buff += ",";
-	// }
-	// buff += "}";
-	
-	buff += MARKER;
+	write(sockfd, std::to_string(buff.size()).c_str(), 128);
 	write(sockfd, buff.c_str(), buff.size());
 	close(sockfd);
 }
